@@ -10,12 +10,10 @@ window.Alpine = Alpine;
 document.addEventListener('alpine:init', () => {
 	Alpine.data('textarea', () => ({
 		content: null,
-		regex: /{{[a-z_]+}}/gi,
-		regexSpan: /(?<=^|\\s){{[a-z_]+}}/gi,
+		regex: /{{[a-z_]+}}/g,
 		highlightable: null,
 		matches: [],
 		checkContent(content) {
-			const matchesMark = content.match(this.regexSpan);
 			this.matches = content.match(this.regex);
 
 			console.log(this.matches);
@@ -33,15 +31,15 @@ document.addEventListener('alpine:init', () => {
 			const rules = [
 				{
 					pattern: supportLookbehind
-						? new RegExp('(?<=^|\\s){{[a-z_]+}}', 'gi')
-						: /{{^[a-z]+(?:_+[a-z]+)*$}}/gi,
+						? new RegExp('(?<=^|\\s){{[a-z_]+}}', 'g')
+						: /{{^[a-z]+(?:_+[a-z]+)*$}}/g,
 
 					class: 'valid'
 				},
 				{
 					pattern: supportLookbehind
-						? new RegExp('(?<=^|\\s){{[a-zA-Z_]+}}', 'gi')
-						: /{{^[a-zA-Z]+(?:_+[a-zA-Z]+)*$}}/gi,
+						? new RegExp('(?<=^|\\s){{[^{}]*}}', 'g')
+						: /{{[^{}]*}}/g,
 					class: 'invalid'
 				}
 			];
